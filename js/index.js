@@ -120,7 +120,7 @@ window.addEventListener("load", function () {
   setTimeout(() => {
     // if (vc) vc.init();
     // if (sample1) sample1.init();
-    utm.init();
+    //if (furnace) furnace.init();
   }, 1500);
 });
 
@@ -170,7 +170,7 @@ function handleStep1() {
   sampleDiameter = len;*/
 
   //if (vc) vc.destory();
-  if (utm) utm.init();
+  if (furnace) furnace.init();
   if (sample1) sample1.init();
   
 
@@ -186,15 +186,15 @@ function handleStep1() {
 
 function handleStep2() {
   let pane = document.getElementById("step2");
-  if (utm) utm.init();
+  if (furnace) furnace.init();
     if(sample1) sample1.init();
-  if (!utm || !utm.isActive()) {
-    alert("Please take UTM machine from menu first!");
+  if (!furnace || !furnace.isActive()) {
+    alert("Please take Furnace from menu first!");
     return;
   }
 
-  if (!utm.isSampleLoaded()) {
-    alert("Please load the sample on the UTM machine first!");
+  if (!furnace.isSampleLoaded()) {
+    alert("Please load the sample on the Furnace machine first!");
     return;
     
   }
@@ -204,7 +204,8 @@ function handleStep2() {
   let next = document.getElementById("step3");
   next.classList.add("active");
   next.classList.remove("disabled");
-   if (utm) utm.destory();
+   //if (furnace) furnace.destory();
+   if (sample1) sample1.destory();
   currentStepProgress = 3;
   vickers.init();
 }
@@ -229,7 +230,6 @@ function handleStep2() {
 function handleStep3() {
   let pane = document.getElementById("step3");
   //if (utm) utm.destory();
-  
   if (vickers) vickers.init();
     if(sample1) sample1.init();
   if (!vickers || !vickers.isActive()) {
@@ -242,10 +242,64 @@ function handleStep3() {
     return;
     
   }
-  
+
   pane.classList.add("done");
   pane.classList.remove("active");
+
+   const images = [
+    { time: " Time - 0h", url: "images/result/0h-1.png" },
+    { time: "Time - 0.5h", url: "images/result/0.5h-1.png" },
+    { time: "Time - 1h", url: "images/result/1h.png" },
+    { time: "Time - 1.5h", url: "images/result/1.5h-1.png" },
+    { time: "Time - 2.5h", url: "images/result/2.5h.png" },
+    { time: "Time - 5h", url: "images/result/5h-1.png" },
+    { time: "Time - 16h", url: "images/result/16h.png" },
+    { time: "Time - 24h", url: "images/result/24h-1.png" },
+    { time: "Time - 42h", url: "images/result/42h-1.png" },
+    { time: "Time - 96h", url: "images/result/96h.png" },
+    { time: "Time - 144h", url: "images/result/144h.png" },
+    { time: "Time - 476h", url: "images/result/476h-1.png" },
+    // Add more images as needed
+  ];
+
+  // Find the table element where the images will be displayed
+  let imageTable = document.getElementById("imageTable");
+
+  // Loop through the images array and create rows in the table
+  images.forEach((image) => {
+    let row = imageTable.insertRow(); // Create a new row
+
+    // Create cells for name and image
+    let timeCell = row.insertCell(0);
+    let imageCell = row.insertCell(1);
+
+    // Set the name in the first column
+    timeCell.innerHTML = image.time;
+
+    // Create an image element and set its attributes
+    let img = document.createElement("img");
+    img.src = image.url;
+    img.width = 200; // Set image width (adjust as needed)
+    img.height = 150; // Set image height (adjust as needed)
+
+    // Append the image to the second column
+    imageCell.appendChild(img);
+  });
    
+ let next = document.getElementById("step4");
+ next.classList.add("active");
+ next.classList.remove("disabled");
+ if(sample1) sample1.destory();
+ if(furnace) furnace.destory();
+ currentStepProgress = 4;
+}
+
+function handleStep4() {
+  let pane = document.getElementById("step4");
+
+  pane.classList.add("done");
+  pane.classList.remove("active"); 
+
   document.getElementById("btnNext").disabled = true;
   
   document.getElementById("startTest").addEventListener("click", function testHandler(e) {
@@ -270,7 +324,7 @@ function handleStep3() {
         document.getElementById("startTest").disabled = false;
         document.getElementById("startTest").innerHTML = "Done";
         document.getElementById("showGraphBtn").disabled = false;
-        utm.stop();
+        furnace.stop();
         document.getElementById("btnNext").disabled = false;
         // document.getElementById("arrowNext").classList.remove("disabled");
         return;
@@ -350,30 +404,27 @@ function handleStep3() {
       document.querySelector(".menu").scrollTo(0, document.querySelector(".menu").scrollHeight);
     }, 600);
   });
-  
-  
-  
-
- let next = document.getElementById("step4");
- next.classList.add("active");
- next.classList.remove("disabled");
- if(sample1) sample1.destory();
- currentStepProgress = 4;
-}
-
-function handleStep4() {
-  let pane = document.getElementById("step4");
-
-  pane.classList.add("done");
-  pane.classList.remove("active");
 
   let next = document.getElementById("step5");
   next.classList.add("active");
   next.classList.remove("disabled");
 
   currentStepProgress = 5;
+}
 
-  modal = new Modal({
+  function handleStep5() {
+    let pane = document.getElementById("step5");
+  
+    pane.classList.add("done");
+    pane.classList.remove("active");
+   
+    let next = document.getElementById("step6");
+    next.classList.add("active");
+    next.classList.remove("disabled");
+
+   currentStepProgress = 6;
+   vickers.destory();
+    modal = new Modal({
     title: "Can you answer the questions?",
     body: [
       {
@@ -412,29 +463,32 @@ function handleStep4() {
          title: "Which test is typically used to obtain aging curve for aluminum alloys?",
          image: "images/hardness.png",
          options: ["Vickers hardness test", "Brinell hardness test", "Tensile test", "Impact test"],
+         correct: 0,
 
 
       }
     ],
-    onClose: handleStep5,
+    onClose: handleStep6,
   });
   modal.show();
+  
+  
 }
 
-function handleStep5() {
-  let pane = document.getElementById("step5");
+function handleStep6() {
+  let pane = document.getElementById("step6");
 
   pane.classList.add("done");
   pane.classList.remove("active");
 
-  let next = document.getElementById("step6");
+  let next = document.getElementById("step7");
   next.classList.add("active");
   next.classList.remove("disabled");
 
-  currentStepProgress = 6;
+  currentStepProgress = 7;
 
   //if (vc) vc.init();
-  if (utm) utm.destory();
+  if (furnace) furnace.destory();
   //if (sample1) sample1.init();
 
 
@@ -485,14 +539,14 @@ function handleStep5() {
     </table>
   `;
 }*/
-function handleStep6() {
-  let pane = document.getElementById("step6");
+function handleStep7() {
+  let pane = document.getElementById("step7");
 
   pane.classList.add("active");
   pane.classList.remove("disabled");
 
-  let step6Content = document.querySelector("#step6 .content");
-  step6Content.innerHTML = ''; // Clear existing content
+  let step7Content = document.querySelector("#step7 .content");
+  step7Content.innerHTML = ''; // Clear existing content
 
   // Add PNG images to Step 6
   const pngImages = [
@@ -514,12 +568,12 @@ function handleStep6() {
   pngImages.forEach((imagePath) => {
     const imgElement = document.createElement("img");
     imgElement.src = imagePath;
-    imgElement.alt = "Step 6 Image";
+    imgElement.alt = "Step 7 Image";
     imgElement.width = 300; // Adjust width as needed
-    step6Content.appendChild(imgElement);
+    step7Content.appendChild(imgElement);
   });
 
-  currentStepProgress = 7;
+  currentStepProgress = 8;
 }
 
 

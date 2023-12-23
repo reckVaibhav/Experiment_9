@@ -550,13 +550,13 @@
     };
   }*/
   
-  function UTM(canvas, ctx) {
+  function Furnace(canvas, ctx) {
     let assetPath = "images/utm/";
-    let itemsToLoad = 4;
+    let itemsToLoad = 3;
     let itemsLoaded = 0;
-    let imgUTM1 = new Image();
-    let imgUTM2 = new Image();
-    let imgUTM3 = new Image();
+    let imgFurnace1 = new Image();
+    let imgFurnace2 = new Image();
+    //let imgUTM3 = new Image();
     let imgUTMPiller1 = new Image();
     let imgUTMPiller2 = new Image();
     let sample = new Image();
@@ -600,14 +600,14 @@
     // imgUTMPiller2.src = assetPath + "utm3.png";
     // imgUTMPiller2.onload = itemsLoaded++;
   
-    imgUTM1.src = assetPath + "utm4.png";
-    imgUTM1.onload = itemsLoaded++;
+    imgFurnace1.src = assetPath + "closedfurnace.png";
+    imgFurnace1.onload = itemsLoaded++;
   
-    imgUTM2.src = assetPath + "furnace.png";
-    imgUTM2.onload = itemsLoaded++;
+    imgFurnace2.src = assetPath + "openfurnace.png";
+    imgFurnace2.onload = itemsLoaded++;
   
-    imgUTM3.src = assetPath + "utm5.png";
-    imgUTM3.onload = itemsLoaded++;
+    //imgUTM3.src = assetPath + "utm5.png";
+    //imgUTM3.onload = itemsLoaded++;
   
     sample.src = assetPath + "aluminium-specimen.png";
     sample.onload = itemsLoaded++;
@@ -642,8 +642,8 @@
       ctx.fillStyle = "black";
       ctx.font = "9pt sans-serif";
   
-      // x = (xOffset + 105) * scale;
-      // y = (yOffset + 180) * scale;
+      /*x = (xOffset + 105) * scale;
+      y = (yOffset + 180) * scale;*/
       // ctx.drawImage(imgUTMPiller1, x, y, imgUTMPiller1.width * scale, imgUTMPiller1.height * scale);
   
       // x = (xOffset + 295) * scale;
@@ -653,28 +653,29 @@
       // x = (xOffset + 68) * scale;
       // let shift = yMovement * 90 - 120;
       // y = (yOffset - shift) * scale;
-      // ctx.drawImage(imgUTM2, x, y, imgUTM2.width * scale, imgUTM2.height * scale);
+       //ctx.drawImage(imgFurnace1, x, y, imgFurnace1.width * scale, imgFurnace1.height * scale);
   
       let _x = xOffset * scale;
       let _y = (yOffset + 100) * scale;
-      ctx.drawImage(imgUTM1, _x, _y, imgUTM1.width * scale, imgUTM1.height * scale);
+      //ctx.drawImage(imgFurnace1, _x, _y, imgFurnace1.width * scale, imgFurnace1.height * scale);
   
-      _x = (xOffset + 40) * scale;
-      _y = (yOffset + 190) * scale;
+      /*_x = (xOffset + 40) * scale;
+      //_x = (xOffset ) * scale;
+      _y = (yOffset + 190) * scale;*/
       if (!sampleLoaded) {
-        ctx.drawImage(imgUTM2, _x, _y, (imgUTM2.width / 3) * scale, (imgUTM2.height / 3) * scale);
+        ctx.drawImage(imgFurnace2, _x, _y, (imgFurnace2.width) * scale, (imgFurnace2.height) * scale);
       }
   
       if (sampleLoaded) {
-        _x = (xOffset + 50) * scale;
-        _y = (yOffset + 190) * scale;
+        _x = (xOffset) * scale;
+        _y = (yOffset + 100) * scale;
   
-        ctx.drawImage(imgUTM3, _x, _y, imgUTM3.width * scale, imgUTM3.height * scale);
+        ctx.drawImage(imgFurnace1, _x, _y, imgFurnace1.width * scale, imgFurnace1.height * scale);
       } else if (flashArrow) {
         let x = (xOffset + 80) * scale;
         let y = (yOffset + 250) * scale;
-        ctx.fillText("Drag sample here", x - 110, y + 12);
-        ctx.drawImage(arrow, x, y, arrow.width / 2.5, arrow.height / 2.5);
+        ctx.fillText("Drag sample here", x - 75, y + 62 );
+        ctx.drawImage(arrow, x + 30, y + 50, arrow.width / 2.5, arrow.height / 2.5);
       }
   
       ctx.save();
@@ -1072,8 +1073,8 @@
   
     const onMouseUpHandler = (event) => {
       if (dragMode == 1) {
-        if (utm && utm.isActive() && utm.isInside(getMouseCoords(event))) {
-          utm.loadSample1();
+        if (furnace && furnace.isActive() && furnace.isInside(getMouseCoords(event))) {
+          furnace.loadSample1();
           destory();
         } else if (vickers && vickers.isActive() && vickers.isInside(getMouseCoords(event))) {
           vickers.loadSample1(rotate + 1);
@@ -1310,8 +1311,8 @@
       // y = (yOffset - shift) * scale;
       // ctx.drawImage(imgUTM2, x, y, imgUTM2.width * scale, imgUTM2.height * scale);
   
-      let _x = xOffset * scale;
-      let _y = (yOffset + 100) * scale;
+      let _x = (xOffset + 600) * scale;
+      let _y = (yOffset ) * scale;
       ctx.drawImage(imgVickers1, _x, _y, imgVickers1.width * scale, imgVickers1.height * scale);
   
       /*_x = (xOffset + 40) * scale;
@@ -1321,13 +1322,13 @@
       }*/
   
       if (sampleLoaded) {
-        _x = xOffset * scale;
-        _y = (yOffset + 100) * scale;
+        _x = (xOffset + 600) * scale;
+        _y = (yOffset ) * scale;
          
         ctx.drawImage(imgVickers2, _x, _y, imgVickers2.width * scale, imgVickers2.height * scale);
       } else if (flashArrow) {
-        let x = (xOffset + 150) * scale;
-        let y = (yOffset + 400) * scale;
+        let x = (xOffset + 740) * scale;
+        let y = (yOffset + 295 ) * scale;
         ctx.fillText("Drag sample here", x - 110, y + 12);
         ctx.drawImage(arrow, x, y, arrow.width / 2.5, arrow.height / 2.5);
       }
@@ -1379,7 +1380,7 @@
     const isInside = ({ x, y }) => {
       boundary = {
         xmin: (xOffset + 20) * scale,
-        xmax: (xOffset + 250) * scale,
+        xmax: (xOffset + 800) * scale,
         ymin: (yOffset + 85) * scale,
         ymax: (yOffset + 660) * scale,
       };
